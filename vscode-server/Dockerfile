@@ -27,7 +27,7 @@ RUN case "${TARGETARCH}" in \
       arm64) VSCODE_ARCH="cli-alpine-arm64" ;; \
       *) echo "Unsupported architecture: ${TARGETARCH}" && exit 1 ;; \
     esac && \
-    wget -O /tmp/vscode_cli.tar.gz 'https://code.visualstudio.com/sha/download?build=stable&os=${VSCODE_ARCH}' && \
+    wget -O /tmp/vscode_cli.tar.gz "https://code.visualstudio.com/sha/download?build=stable&os=${VSCODE_ARCH}" && \
     tar -xf /tmp/vscode_cli.tar.gz -C /tmp && \
     chmod +x /tmp/code && \
     mv /tmp/code /usr/local/bin/code && \
