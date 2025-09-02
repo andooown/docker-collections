@@ -28,8 +28,13 @@ RUN echo "code code/add-microsoft-repo boolean true" | debconf-set-selections &&
 RUN useradd -m -s /bin/bash vscode && \
   usermod -aG sudo vscode && \
   echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-RUN mkdir -p /workspace && \
-    chown -R vscode:vscode /workspace
+RUN mkdir -p /workspace \
+      /home/vscode/.vscode \
+      /home/vscode/.vscode-server && \
+    chown -R vscode:vscode \
+      /workspace \
+      /home/vscode/.vscode \
+      /home/vscode/.vscode-server
 
 USER vscode
 WORKDIR /home/vscode
