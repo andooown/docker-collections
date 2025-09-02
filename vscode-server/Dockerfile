@@ -16,7 +16,8 @@ RUN apt-get install -y \
   net-tools \
   build-essential \
   gpg \
-  ca-certificates && \
+  ca-certificates \
+  sudo && \
   rm -rf /var/lib/apt/lists/*
 
 RUN echo "code code/add-microsoft-repo boolean true" | debconf-set-selections && \
