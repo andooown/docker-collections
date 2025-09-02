@@ -20,11 +20,11 @@ RUN apt-get install -y \
   sudo && \
   rm -rf /var/lib/apt/lists/*
 
-RUN echo "code code/add-microsoft-repo boolean true" | debconf-set-selections && \
-  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/packages.microsoft.gpg && \
-  echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
-  apt-get update && \
-  apt-get install -y code
+RUN curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-x64' --output /tmp/vscode_cli.tar.gz && \
+    tar -xf /tmp/vscode_cli.tar.gz -C /tmp && \
+    chmod +x /tmp/code && \
+    mv /tmp/code /usr/local/bin/code && \
+    rm /tmp/vscode_cli.tar.gz
 
 RUN useradd -m -s /bin/bash vscode && \
   usermod -aG sudo vscode && \
