@@ -23,8 +23,8 @@ RUN apt-get install -y \
       rm -rf /var/lib/apt/lists/*
 
 RUN case "${TARGETARCH}" in \
-      amd64) export VSCODE_ARCH="cli-alpine-x64" ;; \
-      arm64) export VSCODE_ARCH="cli-alpine-arm64" ;; \
+      amd64) VSCODE_ARCH="cli-alpine-x64" ;; \
+      arm64) VSCODE_ARCH="cli-alpine-arm64" ;; \
       *) echo "Unsupported architecture: ${TARGETARCH}" && exit 1 ;; \
     esac && \
     wget -O /tmp/vscode_cli.tar.gz 'https://code.visualstudio.com/sha/download?build=stable&os=${VSCODE_ARCH}' && \
