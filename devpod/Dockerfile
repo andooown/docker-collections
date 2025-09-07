@@ -14,4 +14,6 @@ RUN case "${TARGETARCH}" in \
     chmod +x devpod && \
     mv devpod /usr/local/bin/
 
+RUN devpod provider add docker
+
 ENTRYPOINT ["devpod"]
