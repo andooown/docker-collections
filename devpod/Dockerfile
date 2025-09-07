@@ -1,10 +1,13 @@
-FROM debian:stable-slim
+FROM debian:stable
 
 ARG TARGETARCH
 
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y \
+      curl \
+      ca-certificates && \
     rm -rf /var/lib/apt/lists/*
+
 RUN case "${TARGETARCH}" in \
       amd64) DEVPOD_ARCH="devpod-linux-amd64" ;; \
       arm64) DEVPOD_ARCH="devpod-linux-arm64" ;; \
