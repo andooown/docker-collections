@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJson(needs.discover-dockerfiles.outputs.matrix) }}
+        dockerfile: ${{ fromJson(needs.discover-dockerfiles.outputs.matrix) }}
         platform:
           - linux/amd64
           - linux/arm64
@@ -92,7 +92,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.dockerfile.image }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -108,8 +108,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ${{ matrix.context }}
-          file: ${{ matrix.dockerfile }}
+          context: ${{ matrix.dockerfile.context }}
+          file: ${{ matrix.dockerfile.dockerfile }}
           platforms: ${{ matrix.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
