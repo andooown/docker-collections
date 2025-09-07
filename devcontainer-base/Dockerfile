@@ -5,16 +5,18 @@ ARG TARGETARCH
 
 RUN apt-get update && \
     apt-get install -y \
-      curl \
-      wget \
-      vim \
-      git \
-      net-tools \
       build-essential \
-      gpg \
       ca-certificates \
+      curl \
+      git \
+      gpg \
+      jq \
+      locales \
+      net-tools \
       sudo \
-      locales && \
+      unzip \
+      vim \
+      wget && \
       rm -rf /var/lib/apt/lists/*
 
 # Setup locale
