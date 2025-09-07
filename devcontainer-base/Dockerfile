@@ -54,3 +54,6 @@ WORKDIR /home/vscode
 ENV NVM_DIR="/home/vscode/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
     bash -c ". $NVM_DIR/nvm.sh && nvm install 22"
+
+# Rust
+RUN curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable -y
