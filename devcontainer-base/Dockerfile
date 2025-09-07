@@ -13,7 +13,7 @@ RUN apt-get update && \
       build-essential \
       gpg \
       ca-certificates \
-      sudo && \
+      sudo \
       locales && \
       rm -rf /var/lib/apt/lists/*
 
