@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ARG TARGETARCH
 
 RUN apt-get update && \
-    apt-get install -y \
+    apt-get install --no-install-recommends -y \
       curl \
       wget \
       vim \
