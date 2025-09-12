@@ -1,4 +1,3 @@
-
 FROM ubuntu:24.04
 
 ARG TARGETARCH
@@ -25,3 +24,17 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
+# Create a non-root user
+RUN useradd -m -s /bin/bash vscode && \
+    usermod -aG sudo vscode && \
+    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN mkdir -p /workspaces && \
+    chown -R vscode:vscode /workspaces
+
+COPY --chown=vscode:vscode entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+USER vscode
+WORKDIR /home/vscode
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
