@@ -24,7 +24,14 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
-# Create a non-root user
+# Delete user 'ubuntu' if it exists
+RUN if id "ubuntu" &>/dev/null; then \
+      echo "Deleting user 'ubuntu'"; \
+      userdel -f -r ubuntu || echo "Failed to delete ubuntu user"; \  
+    else \
+      echo "User 'ubuntu' does not exist"; \ 
+    fi
+# Create a non-root user 'vscode'
 RUN useradd -m -s /bin/bash vscode && \
     usermod -aG sudo vscode && \
     echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
