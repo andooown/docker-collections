@@ -7,17 +7,27 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y \
       build-essential \
       ca-certificates \
+      cmake \
       curl \
+      file \
       git \
       gpg \
       jq \
+      libclang-dev \
+      libpq-dev \
+      libssl-dev \
+      libudev-dev \
+      llvm-dev \
       locales \
+      make \
       net-tools \
+      pkg-config \
       sudo \
       unzip \
       vim \
-      wget && \
-      rm -rf /var/lib/apt/lists/*
+      wget \
+      zsh && \
+    rm -rf /var/lib/apt/lists/*
 
 # Setup locale
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
