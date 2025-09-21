@@ -48,8 +48,6 @@ RUN if [ -z "$(getent passwd "${USERNAME}")" ]; then \
     fi && \
     mkdir -p /workspaces && \
     chown -R "${USERNAME}:${USERNAME}" /workspaces 
-USER $USERNAME
-WORKDIR "/home/${USERNAME}"
 
 # Install Visual Studio Code
 RUN case "${TARGETARCH}" in \
@@ -62,6 +60,9 @@ RUN case "${TARGETARCH}" in \
     chmod +x /tmp/code && \
     mv /tmp/code /usr/local/bin/code && \
     rm /tmp/vscode_cli.tar.gz
+
+USER $USERNAME
+WORKDIR "/home/${USERNAME}"
 
 # Node
 ENV NVM_DIR="/home/vscode/.nvm"
