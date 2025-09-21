@@ -2,6 +2,7 @@
 FROM ubuntu:24.04
 
 ARG TARGETARCH
+ARG USERNAME=vscode
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -35,6 +36,21 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
+# Create a non-root user
+RUN if [ -z "$(getent passwd "${USERNAME}")" ]; then \
+      useradd -m -s /bin/bash "${USERNAME}"; \
+    fi && \
+    usermod -aG sudo "${USERNAME}" && \
+    printf '%s ALL=(ALL) NOPASSWD:ALL\n' "${USERNAME}" > /etc/sudoers.d/${USERNAME} && \
+    chmod 0440 /etc/sudoers.d/${USERNAME} && \
+    if [ -x /usr/bin/zsh ]; then \
+      chsh -s /usr/bin/zsh "${USERNAME}"; \
+    fi && \
+    mkdir -p /workspaces && \
+    chown -R "${USERNAME}:${USERNAME}" /workspaces 
+USER $USERNAME
+WORKDIR "/home/${USERNAME}"
+
 # Install Visual Studio Code
 RUN case "${TARGETARCH}" in \
       amd64) VSCODE_ARCH="cli-alpine-x64" ;; \
@@ -46,21 +62,6 @@ RUN case "${TARGETARCH}" in \
     chmod +x /tmp/code && \
     mv /tmp/code /usr/local/bin/code && \
     rm /tmp/vscode_cli.tar.gz
-
-# Create a non-root user
-RUN useradd -m -s /bin/bash vscode && \
-    usermod -aG sudo vscode && \
-    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-RUN mkdir -p /workspace \
-      /home/vscode/.vscode \
-      /home/vscode/.vscode-server && \
-    chown -R vscode:vscode \
-      /workspace \
-      /home/vscode/.vscode \
-      /home/vscode/.vscode-server
-
-USER vscode
-WORKDIR /home/vscode
 
 # Node
 ENV NVM_DIR="/home/vscode/.nvm"
