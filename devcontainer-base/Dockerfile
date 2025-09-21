@@ -65,9 +65,16 @@ USER $USERNAME
 WORKDIR "/home/${USERNAME}"
 
 # Node
-ENV NVM_DIR="/home/vscode/.nvm"
+ENV NVM_DIR="/home/${USERNAME}/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
     bash -c ". $NVM_DIR/nvm.sh && nvm install 22"
 
 # Rust
-RUN curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable -y
+ENV PATH="/home/${USERNAME}/.cargo/bin:$PATH"
+RUN curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable -y && \
+    rustup component add rustfmt clippy
+
+# Python・uv
+ENV PATH="/home/${USERNAME}/.local/bin:$PATH"
+RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/astral-sh/uv/releases/download/0.8.17/uv-installer.sh | sh && \
+    uv python install 3.12
