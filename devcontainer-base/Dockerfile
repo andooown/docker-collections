@@ -55,7 +55,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | b
     echo -e "\
     export NVM_DIR=\"\$HOME/.nvm\"\n\
     [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"\n\
-    " >> ~/.zshrc
+    " >> /home/${USERNAME}/.zshrc
 
 # Rust
 ENV PATH="/home/${USERNAME}/.cargo/bin:$PATH"
