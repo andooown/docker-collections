@@ -21,6 +21,7 @@ chmod 0440 /etc/sudoers.d/${USERNAME}
 if [ -x /usr/bin/zsh ]; then
   echo "Changing shell for user '${USERNAME}' to zsh"
   chsh -s /usr/bin/zsh "${USERNAME}"
+  touch /home/${USERNAME}/.zshrc
 fi
 
 # Create and configure workspaces directory
