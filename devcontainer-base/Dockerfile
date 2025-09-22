@@ -37,19 +37,8 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # Create a non-root user
-RUN if [ -z "$(getent passwd "${USERNAME}")" ]; then \
-      echo "Creating user '${USERNAME}'"; \
-      useradd -m -s /bin/bash "${USERNAME}"; \
-    fi && \
-    usermod -aG sudo "${USERNAME}" && \
-    printf '%s ALL=(ALL) NOPASSWD:ALL\n' "${USERNAME}" > /etc/sudoers.d/${USERNAME} && \
-    chmod 0440 /etc/sudoers.d/${USERNAME} && \
-    if [ -x /usr/bin/zsh ]; then \
-      echo "Changing shell for user '${USERNAME}' to zsh"; \
-      chsh -s /usr/bin/zsh "${USERNAME}"; \
-    fi && \
-    mkdir -p /workspaces && \
-    chown -R "${USERNAME}:${USERNAME}" /workspaces 
+COPY create-user.sh /tmp/
+RUN /tmp/create-user.sh && rm /tmp/create-user.sh 
 
 USER $USERNAME
 WORKDIR "/home/${USERNAME}"
