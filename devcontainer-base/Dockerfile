@@ -3,6 +3,7 @@ FROM ubuntu:24.04
 
 ARG TARGETARCH
 ARG USERNAME=vscode
+ARG NODE_VERSION=22
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -46,7 +47,10 @@ WORKDIR "/home/${USERNAME}"
 # Node
 ENV NVM_DIR="/home/${USERNAME}/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
-    bash -c ". $NVM_DIR/nvm.sh && nvm install 22"
+    source $NVM_DIR/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use default
 
 # Rust
 ENV PATH="/home/${USERNAME}/.cargo/bin:$PATH"
