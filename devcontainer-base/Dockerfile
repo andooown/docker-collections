@@ -46,11 +46,16 @@ WORKDIR "/home/${USERNAME}"
 
 # Node
 ENV NVM_DIR="/home/${USERNAME}/.nvm"
+SHELL ["/bin/bash", "-lc"]
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
     source $NVM_DIR/nvm.sh && \
     nvm install $NODE_VERSION && \
     nvm alias default $NODE_VERSION && \
-    nvm use default
+    nvm use default && \
+    echo -e "\
+    export NVM_DIR=\"\$HOME/.nvm\"\n\
+    [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"\n\
+    " >> ~/.zshrc
 
 # Rust
 ENV PATH="/home/${USERNAME}/.cargo/bin:$PATH"
